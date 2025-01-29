@@ -3,18 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recherche de Films</title>
+    <title>Netflux</title>
+    <link rel="shortcut icon" href="/src/assets/favicon.ico"/>
     <link rel="stylesheet" href="/src/style/style.css">
 </head>
 <body>
     <div class="container">
         <h1>Recherche de Films</h1>
+
         <div class="search-box">
-            <input type="text" id="search-input" placeholder="Entrez un titre de film">
-            <button id="search-button">Rechercher</button>
+            <input type="text" id="search-input" placeholder="Rechercher un film..." onkeyup="fetchMovies()">
         </div>
+
+        <h2>Les films les plus recherchés</h2>
+        <div class="popular-movies" id="popular-movies"></div>
+
+        <h2>🎬 Tous les films</h2>
         <div id="results"></div>
     </div>
+
     <script src="/src/script/script.js"></script>
 </body>
 </html>
