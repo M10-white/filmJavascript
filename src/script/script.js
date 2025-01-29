@@ -31,9 +31,9 @@ async function fetchRandomMovies() {
     if (isLoading) return;  // Empêche de recharger plusieurs fois en même temps
     isLoading = true;
 
-    let allMoviesContainer = document.getElementById("all-movies");
+    document.getElementById("loader").classList.remove("hidden");
 
-    // Choisir un mot-clé aléatoire pour diversifier les résultats
+    let allMoviesContainer = document.getElementById("all-movies");
     let keyword = RANDOM_KEYWORDS[Math.floor(Math.random() * RANDOM_KEYWORDS.length)];
 
     const response = await fetch(`https://www.omdbapi.com/?apikey=${API_KEY}&s=${keyword}&page=${page}`);
@@ -89,23 +89,41 @@ async function fetchMovies() {
     }
 }
 
-// 🎥 Carrousel : Défilement des films populaires
 function scrollLeft() {
-    document.getElementById("popular-movies").scrollBy({ left: -1200, behavior: "smooth" });
+    let container = document.getElementById("popular-movies");
+    if (container) {
+        container.scrollBy({ left: -container.clientWidth / 2, behavior: "smooth" });
+    }
 }
 
 function scrollRight() {
-    document.getElementById("popular-movies").scrollBy({ left: 1200, behavior: "smooth" });
+    let container = document.getElementById("popular-movies");
+    if (container) {
+        container.scrollBy({ left: container.clientWidth / 2, behavior: "smooth" });
+    }
 }
 
-// 📜 Scroll Infini : Charger plus de films en bas de page
+// Masquer les flèches si on ne peut plus scroller
+function updateArrows() {
+    let container = document.getElementById("popular-movies");
+    let leftArrow = document.querySelector(".left");
+    let rightArrow = document.querySelector(".right");
+
+    if (container) {
+        leftArrow.style.display = container.scrollLeft > 0 ? "block" : "none";
+        rightArrow.style.display = container.scrollLeft < (container.scrollWidth - container.clientWidth) ? "block" : "none";
+    }
+}
+
+// Vérifier les flèches après chaque scroll
+document.getElementById("popular-movies").addEventListener("scroll", updateArrows);
+
 window.addEventListener("scroll", () => {
     if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
         fetchRandomMovies();
     }
 });
 
-// ⏳ Chargement initial
 window.onload = () => {
     fetchPopularMovies();
     fetchRandomMovies();

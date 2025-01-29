@@ -21,9 +21,9 @@
 
         <h2>Les films les plus recherchés</h2>
         <div class="carousel">
-            <button class="prev" onclick="scrollLeft()">⬅️</button>
+            <span class="arrow left" onclick="scrollLeft()">◀</span>
             <div class="popular-movies" id="popular-movies"></div>
-            <button class="next" onclick="scrollRight()">➡️</button>
+            <span class="arrow right" onclick="scrollRight()">▶</span>
         </div>
 
         <h2>Tous les films</h2>
@@ -31,6 +31,10 @@
 
     </div>
 
+    <div id="loader" class="hidden">
+        <div class="spinner"></div>
+    </div>
+    
 </body>
 <script src="/src/script/script.js"></script>
 </html>
