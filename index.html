@@ -8,20 +8,29 @@
     <link rel="stylesheet" href="/src/style/style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Recherche de Films</h1>
 
-        <div class="search-box">
-            <input type="text" id="search-input" placeholder="Rechercher un film..." onkeyup="fetchMovies()">
-        </div>
-
-        <h2>Les films les plus recherchés</h2>
-        <div class="popular-movies" id="popular-movies"></div>
-
-        <h2>🎬 Tous les films</h2>
-        <div id="results"></div>
+    <div class="title">
+        <img src="/src/assets/logo.png" alt="Logo" class="logo-img">    
+        <h1>Netflux</h1>
+    </div>
+    <div class="search-box">
+        <input type="text" id="search-input" placeholder="Rechercher un film..." onkeyup="fetchMovies()">
     </div>
 
-    <script src="/src/script/script.js"></script>
+    <div class="container">
+
+        <h2>Les films les plus recherchés</h2>
+        <div class="carousel">
+            <button class="prev" onclick="scrollLeft()">⬅️</button>
+            <div class="popular-movies" id="popular-movies"></div>
+            <button class="next" onclick="scrollRight()">➡️</button>
+        </div>
+
+        <h2>Tous les films</h2>
+        <div id="all-movies"></div>
+
+    </div>
+
 </body>
+<script src="/src/script/script.js"></script>
 </html>
