@@ -1,4 +1,4 @@
-# 🎬 Projet : Recherche de Films avec l'API OMDB
+# 🎬 Recherche de Films avec l'API OMDB
 
 ## 📌 Description
 Ce projet est une application web permettant de rechercher des films en utilisant l'API OMDB. Il affiche :
@@ -21,8 +21,8 @@ Ce projet est une application web permettant de rechercher des films en utilisan
 
 ### 1️⃣ Cloner le projet
 ```bash
-git clone https://github.com/ton-repo/nom-du-projet.git
-cd nom-du-projet
+git clone https://github.com/M10-white/filmJavascript.git
+cd filmJavascript
 ```
 
 ### 2️⃣ Remplacer la clé API
