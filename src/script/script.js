@@ -1,6 +1,6 @@
 const API_KEY = "d48716f1";
 const POPULAR_MOVIES = ["Batman", "Inception", "Interstellar", "Titanic", "Avatar", "Gladiator", "The Matrix"];
-const RANDOM_KEYWORDS = ["space", "war", "love", "future", "magic", "adventure", "hero", "spy"];
+const RANDOM_KEYWORDS = ["space", "war", "family", "future", "magic", "adventure", "hero", "spy"];
 let page = 1;  // Pagination pour charger plus de films
 let isLoading = false;  // Évite les chargements multiples
 
@@ -57,13 +57,39 @@ async function fetchRandomMovies() {
     isLoading = false;
 }
 
+document.addEventListener("DOMContentLoaded", function() {
+    let leftArrow = document.querySelector(".left");
+    if (leftArrow) {
+        leftArrow.addEventListener("click", scrollLeft);
+    }
+
+    let rightArrow = document.querySelector(".right");
+    if (rightArrow) {
+        rightArrow.addEventListener("click", scrollRight);
+    }
+
+    let searchButton = document.getElementById("search-button");
+    if (searchButton) {
+        searchButton.addEventListener("click", fetchMovies);
+    }
+});
+
 async function fetchMovies() {
     let searchQuery = document.getElementById("search-input").value.toLowerCase();
+
+    // Cacher la section des films les plus recherchés
+    let popularSection = document.querySelector(".carousel");
+    let popularTitle = document.querySelector("h2");
+    popularSection.style.display = "none";
+    popularTitle.style.display = "none";
 
     if (searchQuery.trim() === "") {
         document.getElementById("all-movies").innerHTML = ""; // Efface les films actuels
         page = 1;  // Réinitialise la pagination
+        fetchPopularMovies();  // Recharge les films populaires
         fetchRandomMovies();  // Recharge des films aléatoires
+        popularSection.style.display = "flex";
+        popularTitle.style.display = "block";
         return;
     }
 
@@ -85,9 +111,12 @@ async function fetchMovies() {
             allMoviesContainer.innerHTML += movieCard;
         });
     } else {
-        allMoviesContainer.innerHTML = "<p>Aucun film trouvé.</p>";
+        allMoviesContainer.innerHTML = "<p>Aucun film trouvé.</p><br></br>";
     }
 }
+
+// Ajoutez cet événement pour déclencher la recherche
+document.getElementById("search-input").addEventListener("input", fetchMovies);
 
 document.addEventListener("DOMContentLoaded", function() {
     let leftArrow = document.querySelector(".left");
