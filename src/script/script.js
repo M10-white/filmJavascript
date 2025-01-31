@@ -1,5 +1,5 @@
 const API_KEY = "d48716f1";
-const POPULAR_MOVIES = ["Batman", "Inception", "Interstellar", "Titanic", "Avatar", "Gladiator", "The Matrix"];
+const POPULAR_MOVIES = ["Jurassic World", "Black Panther", "Fast & Furious 7", "Titanic", "Avatar", "Gladiator", "The Matrix"];
 const RANDOM_KEYWORDS = ["space", "war", "family", "future", "magic", "adventure", "hero", "spy"];
 let page = 1;  // Pagination pour charger plus de films
 let isLoading = false;  // Évite les chargements multiples
@@ -14,14 +14,16 @@ async function fetchPopularMovies() {
         
         if (data.Response === "True") {
             data.Search.forEach(movie => {
-                let movieCard = `
-                    <div class="movie-card">
-                        <img src="${movie.Poster !== "N/A" ? movie.Poster : "placeholder.jpg"}" alt="${movie.Title}">
-                        <h3>${movie.Title}</h3>
-                        <p>Année : ${movie.Year}</p>
-                    </div>
-                `;
-                popularContainer.innerHTML += movieCard;
+                if (movie.Poster !== "N/A") {  // Vérifie si le film a une image
+                    let movieCard = `
+                        <div class="movie-card">
+                            <img src="${movie.Poster}" alt="${movie.Title}">
+                            <h3>${movie.Title}</h3>
+                            <p>Année : ${movie.Year}</p>
+                        </div>
+                    `;
+                    popularContainer.innerHTML += movieCard;
+                }
             });
         }
     }
@@ -41,19 +43,20 @@ async function fetchRandomMovies() {
 
     if (data.Response === "True") {
         data.Search.forEach(movie => {
-            let movieCard = `
-                <div class="movie-card">
-                    <img src="${movie.Poster !== "N/A" ? movie.Poster : "placeholder.jpg"}" alt="${movie.Title}">
-                    <h3>${movie.Title}</h3>
-                    <p>Année : ${movie.Year}</p>
-                </div>
-            `;
-            allMoviesContainer.innerHTML += movieCard;
+            if (movie.Poster !== "N/A") {  // Vérifie si le film a une image
+                let movieCard = `
+                    <div class="movie-card">
+                        <img src="${movie.Poster}" alt="${movie.Title}">
+                        <h3>${movie.Title}</h3>
+                        <p>Année : ${movie.Year}</p>
+                    </div>
+                `;
+                allMoviesContainer.innerHTML += movieCard;
+            }
         });
-
-        page++; // Augmente la page pour le prochain chargement
     }
 
+    document.getElementById("loader").classList.add("hidden");
     isLoading = false;
 }
 
@@ -101,17 +104,19 @@ async function fetchMovies() {
 
     if (data.Response === "True") {
         data.Search.forEach(movie => {
-            let movieCard = `
-                <div class="movie-card">
-                    <img src="${movie.Poster !== "N/A" ? movie.Poster : "placeholder.jpg"}" alt="${movie.Title}">
-                    <h3>${movie.Title}</h3>
-                    <p>Année : ${movie.Year}</p>
-                </div>
-            `;
-            allMoviesContainer.innerHTML += movieCard;
+            if (movie.Poster !== "N/A") {  // Vérifie si le film a une image
+                let movieCard = `
+                    <div class="movie-card">
+                        <img src="${movie.Poster}" alt="${movie.Title}">
+                        <h3>${movie.Title}</h3>
+                        <p>Année : ${movie.Year}</p>
+                    </div>
+                `;
+                allMoviesContainer.innerHTML += movieCard;
+            }
         });
     } else {
-        allMoviesContainer.innerHTML = "<p>Aucun film trouvé.</p><br></br>";
+        allMoviesContainer.innerHTML = "<p>Aucun film trouvé.</p>";
     }
 }
 

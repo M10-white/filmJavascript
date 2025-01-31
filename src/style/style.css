@@ -54,6 +54,7 @@ h2 {
 
 .search-box {
     margin-bottom: 5%;
+    padding: 0 10% 0 10%;
 }
 
 input {
@@ -63,7 +64,7 @@ input {
     border-radius: 5px;
 }
 
-/* CARROUSEL */
+/* CAROUSEL */
 .carousel {
     display: flex;
     align-items: center;
@@ -73,14 +74,18 @@ input {
 }
 
 .popular-movies {
-    display: flex;
     overflow-x: auto;
-    gap: 20px;
     padding: 10px;
     white-space: nowrap;
     scroll-behavior: smooth;
     width: 80%;
     max-width: 100%;
+}
+
+.popular-movies .movie-card h3 {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /* Positionnement des flèches */
@@ -114,6 +119,7 @@ input {
 }
 .left {
     left: 10px;
+    display: none;
 }
 .right {
     right: 10px;
