@@ -106,10 +106,15 @@ input {
     background: var(--button-hover);
 }
 
+.left, .right {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
 .left {
     left: 10px;
 }
-
 .right {
     right: 10px;
 }
@@ -174,4 +179,9 @@ input {
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+
+#popular-movies {
+    overflow-x: scroll;
+    white-space: nowrap;
 }

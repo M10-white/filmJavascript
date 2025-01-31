@@ -89,17 +89,33 @@ async function fetchMovies() {
     }
 }
 
+document.addEventListener("DOMContentLoaded", function() {
+    let leftArrow = document.querySelector(".left");
+    if (leftArrow) {
+        leftArrow.addEventListener("click", scrollLeft);
+    }
+
+    let rightArrow = document.querySelector(".right");
+    if (rightArrow) {
+        rightArrow.addEventListener("click", scrollRight);
+    }
+});
+
 function scrollLeft() {
     let container = document.getElementById("popular-movies");
     if (container) {
-        container.scrollBy({ left: -container.clientWidth / 2, behavior: "smooth" });
+        container.scrollBy({ left: ( -container.clientWidth + -900 ) / 2, behavior: "smooth" });
+    } else {
+        console.error("Element with ID 'popular-movies' not found.");
     }
 }
 
 function scrollRight() {
     let container = document.getElementById("popular-movies");
     if (container) {
-        container.scrollBy({ left: container.clientWidth / 2, behavior: "smooth" });
+        container.scrollBy({ left: ( container.clientWidth + 900 ) / 2, behavior: "smooth" });
+    } else {
+        console.error("Element with ID 'popular-movies' not found.");
     }
 }
 
