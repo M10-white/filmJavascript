@@ -1,5 +1,5 @@
 const API_KEY = "d48716f1";
-const POPULAR_MOVIES = ["Jurassic World", "Black Panther", "Fast & Furious 7", "Titanic", "Avatar", "Gladiator", "The Matrix"];
+const POPULAR_MOVIES = ["Jurassic World", "Black Panther", "Fast & Furious 7", "Titanic", "Avatar", "Dune", "The Matrix"];
 const RANDOM_KEYWORDS = ["space", "war", "family", "future", "magic", "adventure", "hero", "spy"];
 let page = 1;  // Pagination pour charger plus de films
 let isLoading = false;  // Évite les chargements multiples
@@ -13,18 +13,22 @@ async function fetchPopularMovies() {
         const data = await response.json();
         
         if (data.Response === "True") {
-            data.Search.forEach(movie => {
+            for (const movie of data.Search) {
                 if (movie.Poster !== "N/A") {  // Vérifie si le film a une image
+                    const movieDetailsResponse = await fetch(`https://www.omdbapi.com/?apikey=${API_KEY}&i=${movie.imdbID}`);
+                    const movieDetails = await movieDetailsResponse.json();
+
                     let movieCard = `
                         <div class="movie-card">
                             <img src="${movie.Poster}" alt="${movie.Title}">
                             <h3>${movie.Title}</h3>
                             <p>Année : ${movie.Year}</p>
+                            <p>Note IMDb : ${movieDetails.imdbRating}</p>
                         </div>
                     `;
                     popularContainer.innerHTML += movieCard;
                 }
-            });
+            }
         }
     }
 }
@@ -42,18 +46,22 @@ async function fetchRandomMovies() {
     const data = await response.json();
 
     if (data.Response === "True") {
-        data.Search.forEach(movie => {
+        for (const movie of data.Search) {
             if (movie.Poster !== "N/A") {  // Vérifie si le film a une image
+                const movieDetailsResponse = await fetch(`https://www.omdbapi.com/?apikey=${API_KEY}&i=${movie.imdbID}`);
+                const movieDetails = await movieDetailsResponse.json();
+
                 let movieCard = `
                     <div class="movie-card">
                         <img src="${movie.Poster}" alt="${movie.Title}">
                         <h3>${movie.Title}</h3>
                         <p>Année : ${movie.Year}</p>
+                        <p>Note IMDb : ${movieDetails.imdbRating}</p>
                     </div>
                 `;
                 allMoviesContainer.innerHTML += movieCard;
             }
-        });
+        }
     }
 
     document.getElementById("loader").classList.add("hidden");
@@ -62,11 +70,13 @@ async function fetchRandomMovies() {
 
 document.addEventListener("DOMContentLoaded", function() {
     let leftArrow = document.querySelector(".left");
+    let rightArrow = document.querySelector(".right");
+    let carousel = document.querySelector(".carousel");
+
     if (leftArrow) {
         leftArrow.addEventListener("click", scrollLeft);
     }
 
-    let rightArrow = document.querySelector(".right");
     if (rightArrow) {
         rightArrow.addEventListener("click", scrollRight);
     }
@@ -75,6 +85,12 @@ document.addEventListener("DOMContentLoaded", function() {
     if (searchButton) {
         searchButton.addEventListener("click", fetchMovies);
     }
+
+    // Check the scroll position initially
+    checkScrollPosition();
+
+    // Add event listener to check scroll position after each scroll
+    carousel.addEventListener("scroll", checkScrollPosition);
 });
 
 async function fetchMovies() {
@@ -96,27 +112,29 @@ async function fetchMovies() {
         return;
     }
 
-    const response = await fetch(`https://www.omdbapi.com/?apikey=${API_KEY}&s=${searchQuery}`);
+    const response = await fetch(`https://www.omdbapi.com/?apikey=${API_KEY}&s=${searchQuery}&page=${page}`);
     const data = await response.json();
 
-    let allMoviesContainer = document.getElementById("all-movies");
-    allMoviesContainer.innerHTML = "";
-
     if (data.Response === "True") {
-        data.Search.forEach(movie => {
+        let allMoviesContainer = document.getElementById("all-movies");
+        allMoviesContainer.innerHTML = ""; // Efface les films actuels
+
+        for (const movie of data.Search) {
             if (movie.Poster !== "N/A") {  // Vérifie si le film a une image
+                const movieDetailsResponse = await fetch(`https://www.omdbapi.com/?apikey=${API_KEY}&i=${movie.imdbID}`);
+                const movieDetails = await movieDetailsResponse.json();
+
                 let movieCard = `
                     <div class="movie-card">
                         <img src="${movie.Poster}" alt="${movie.Title}">
                         <h3>${movie.Title}</h3>
                         <p>Année : ${movie.Year}</p>
+                        <p>Note IMDb : ${movieDetails.imdbRating}</p>
                     </div>
                 `;
                 allMoviesContainer.innerHTML += movieCard;
             }
-        });
-    } else {
-        allMoviesContainer.innerHTML = "<p>Aucun film trouvé.</p>";
+        }
     }
 }
 
@@ -161,7 +179,7 @@ function updateArrows() {
 
     if (container) {
         leftArrow.style.display = container.scrollLeft > 0 ? "block" : "none";
-        rightArrow.style.display = container.scrollLeft < (container.scrollWidth - container.clientWidth) ? "block" : "none";
+        rightArrow.style.display = container.scrollLeft < (container.scrollWidth - container.clientWidth)-350 ? "block" : "none";
     }
 }
 
