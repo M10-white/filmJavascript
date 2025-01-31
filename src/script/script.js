@@ -85,13 +85,21 @@ document.addEventListener("DOMContentLoaded", function() {
     if (searchButton) {
         searchButton.addEventListener("click", fetchMovies);
     }
-
-    // Check the scroll position initially
-    checkScrollPosition();
-
-    // Add event listener to check scroll position after each scroll
-    carousel.addEventListener("scroll", checkScrollPosition);
 });
+
+function openPopup(movie) {
+    document.getElementById("popup-poster").src = movie.Poster;
+    document.getElementById("popup-title").innerText = movie.Title;
+    document.getElementById("popup-year").innerText = `Année : ${movie.Year}`;
+    document.getElementById("popup-rating").innerText = `Note IMDb : ${movie.imdbRating}`;
+    document.getElementById("popup-plot").innerText = movie.Plot;
+
+    document.getElementById("movie-popup").style.display = "block";
+}
+
+function closePopup() {
+    document.getElementById("movie-popup").style.display = "none";
+}
 
 async function fetchMovies() {
     let searchQuery = document.getElementById("search-input").value.toLowerCase();
@@ -124,15 +132,16 @@ async function fetchMovies() {
                 const movieDetailsResponse = await fetch(`https://www.omdbapi.com/?apikey=${API_KEY}&i=${movie.imdbID}`);
                 const movieDetails = await movieDetailsResponse.json();
 
-                let movieCard = `
-                    <div class="movie-card">
-                        <img src="${movie.Poster}" alt="${movie.Title}">
-                        <h3>${movie.Title}</h3>
-                        <p>Année : ${movie.Year}</p>
-                        <p>Note IMDb : ${movieDetails.imdbRating}</p>
-                    </div>
+                let movieCard = document.createElement("div");
+                movieCard.classList.add("movie-card");
+                movieCard.innerHTML = `
+                    <img src="${movie.Poster}" alt="${movie.Title}">
+                    <h3>${movie.Title}</h3>
+                    <p>Année : ${movie.Year}</p>
+                    <p>Note IMDb : ${movieDetails.imdbRating}</p>
                 `;
-                allMoviesContainer.innerHTML += movieCard;
+                movieCard.addEventListener("click", () => openPopup(movieDetails));
+                allMoviesContainer.appendChild(movieCard);
             }
         }
     }
